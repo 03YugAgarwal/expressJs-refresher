@@ -1,14 +1,12 @@
 const express = require("express");
-const mongoose = require('mongoose');
+
 const cookieParser = require("cookie-parser");
 const groceriesRouter = require('./routes/groceries')
 const authRouter = require('./routes/auth')
 const marketRouter = require('./routes/market')
 const session = require('express-session');
 
-var db = mongoose.connect('mongodb://127.0.0.1:27017/expressJs_tutorial')
-    .then(()=>{console.log('Connected to mongoose')})
-    .catch((e)=>{console.log(e);});
+require("./database")
 
 const app = express();
 const PORT = 3333;
