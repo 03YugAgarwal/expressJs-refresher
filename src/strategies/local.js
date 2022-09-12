@@ -6,7 +6,7 @@ const { comparePass } = require("../utils/helper")
 passport.serializeUser((user,done)=>done(null,user.id))
 passport.deserializeUser(async (id,done)=>{
     try{
-        const user = await User.findOne(id);
+        const user = await User.findById(id);
         if(!user) throw new Error("No such user found")
         else done(null,user);
     }catch(e){
@@ -29,7 +29,6 @@ passport.use(
             if (!userDb) throw new Error("user not found");
             const isValid = comparePass(password, userDb.password)
             if (isValid) {
-                req.session.user = userDb;
                 done(null,userDb)
             } else {
                 done(null,null)

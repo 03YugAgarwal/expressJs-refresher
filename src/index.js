@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
@@ -11,7 +12,8 @@ const authRouter = require('./routes/auth')
 const marketRouter = require('./routes/market')
 
 require("./database")
-require("./strategies/local")
+// require("./strategies/local")
+require('./strategies/discord')
 
 const app = express();
 const PORT = 3333;
@@ -23,7 +25,7 @@ app.use(express.urlencoded());
 
 app.use(cookieParser())
 app.use(session({
-    secret: "NALSDNOLN@#!",
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({

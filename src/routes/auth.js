@@ -34,4 +34,8 @@ router.post('/register',async (req,res)=>{
     }
 })
 
+router.get('/discord',passport.authenticate('discord'),(req,res)=>{return res.sendStatus(200)})
+
+router.get('/discord/redirect',passport.authenticate('discord'),(req,res)=>{return res.sendStatus(200)})
+
 module.exports = router;
