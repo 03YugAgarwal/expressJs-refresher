@@ -3,7 +3,7 @@ const {Router} = require('express');
 const router = Router();
 
 router.use((req,res,next)=>{
-    if(req.session.user){
+    if(req.user){
         next();
     }else{
         res.send(401);

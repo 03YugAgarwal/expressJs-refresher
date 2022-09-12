@@ -1,12 +1,17 @@
 const express = require("express");
-
+const session = require('express-session');
 const cookieParser = require("cookie-parser");
+const MongoStore = require('connect-mongo')
+
+const passport = require('passport');
+
+// Routes
 const groceriesRouter = require('./routes/groceries')
 const authRouter = require('./routes/auth')
 const marketRouter = require('./routes/market')
-const session = require('express-session');
 
 require("./database")
+require("./strategies/local")
 
 const app = express();
 const PORT = 3333;
@@ -14,12 +19,27 @@ const PORT = 3333;
 // USING MIDDLEWARE
 app.use(express.json());
 app.use(express.urlencoded());
+
+
 app.use(cookieParser())
 app.use(session({
     secret: "NALSDNOLN@#!",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://127.0.0.1:27017/expressJs_tutorial'
+    })
 }))
+
+app.use((req,res,next)=>{
+    console.log(`${req.method}:${req.url}`);
+    next();
+})
+
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 // ROUTES
 app.use('/api/groceries',groceriesRouter)
